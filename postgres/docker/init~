@@ -1,0 +1,9 @@
+#!/bin/sh
+set -e
+mkdir /usr/share/zoneinfo /data
+chown default /data
+head -c 16 /dev/urandom  | sha1sum | cut -c1-10 > /pwfile
+echo "PG_PASSWORD=$(cat /pwfile)"
+su default -s /usr/bin/initdb -- --pgdata=/data --pwfile=/pwfile --username=postgres --auth=trust >/dev/null
+echo host all all 0.0.0.0 0.0.0.0 md5 >> /data/pg_hba.conf
+exec su default -s /usr/bin/postgres -- -D /data -c 'listen_addresses=*'
