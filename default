@@ -14,9 +14,9 @@ server {
     ssl_session_timeout  10m;
  
     location / {
-        proxy_pass http://flocker.readthedocs.org:80;
+        proxy_pass https://SLUGRPL.readthedocs.org:443;
         proxy_set_header Host $http_host;
-        proxy_set_header X-Forwarded-Proto http;
+        proxy_set_header X-Forwarded-Proto https;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Scheme $scheme;
         proxy_set_header X-RTD-SLUG SLUGRPL;
@@ -32,7 +32,7 @@ server {
     server_name HOSTNAME;
 
     location / {
-        proxy_pass http://flocker.readthedocs.org:80;
+        proxy_pass http://SLUGRPL.readthedocs.org:80;
         proxy_set_header Host $http_host;
         proxy_set_header X-Forwarded-Proto http;
         proxy_set_header X-Real-IP $remote_addr;
