@@ -10,7 +10,7 @@ ENV DEBIAN_FRONTEND noninteractive
 RUN apt-get update && apt-get install -y nginx
 
 ADD default /etc/nginx/sites-enabled/
-RUN echo "daemon off;" >> /etc/nginx/nginx.conf
+ADD nginx.conf /etc/nginx/nginx.conf
 
 VOLUME ["/ssl"]
 ADD start.sh /
