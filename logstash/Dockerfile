@@ -9,5 +9,4 @@ RUN ["yum", "install", "-y", "logstash"]
 ADD run.sh /usr/local/bin/run
 CMD /usr/local/bin/run
 
-EXPOSE 514
-EXPOSE 514/udp
+EXPOSE 5000
