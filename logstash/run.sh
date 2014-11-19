@@ -1,7 +1,7 @@
 #!/bin/sh
 set -e
 
-/opt/logstash/bin/logstash -e "
+exec /opt/logstash/bin/logstash -e "
 input {
   tcp {
     port => 5000
