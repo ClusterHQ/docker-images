@@ -1,4 +1,6 @@
 #!/bin/sh
+set -e
+
 /opt/logstash/bin/logstash -e "
 input {
   tcp {
