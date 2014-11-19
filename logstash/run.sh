@@ -1,6 +1,21 @@
 #!/usr/bin/env python
+# Copyright Hybrid Logic Ltd.  See LICENSE file for details.
+
+"""
+Start Logstash after checking that Elasticsearch is accepting connections.
+"""
 
 import os
+import socket
+import sys
+import time
+
+ES_ADDRESS = (
+    os.environ['ES_PORT_9200_TCP_ADDR'],
+    os.environ['ES_PORT_9200_TCP_PORT']
+)
+
+TIMEOUT = 60
 
 LOGSTASH_BIN = "/opt/logstash/bin/logstash"
 LOGSTASH_CONFIG = """\
@@ -20,4 +35,26 @@ output {
 }
 """ % os.environ
 
-os.execv(LOGSTASH_BIN, [LOGSTASH_BIN, '-e', LOGSTASH_CONFIG])
+def connection_accepted(address, timeout, connect_timout=60, connect_delay=1):
+    """
+    Periodically attempt to connect to address until a connection is established
+    or until timeout is reached.
+    """
+    start_time = time.time()
+    while time.time() - start_time < timeout:
+        try:
+            socket.create_connection(ES_ADDRESS, connect_timeout).close()
+        except:
+            time.sleep(connect_delay)
+        else:
+            return True
+    else:
+        return False
+
+if connection_accepted(ES_ADDRESS, TIMEOUT):
+    os.execv(LOGSTASH_BIN, [LOGSTASH_BIN, '-e', LOGSTASH_CONFIG])
+else:
+    sys.stderr.write(
+        'Unable to connect to ElasticSearch (%s) '
+        'after %s seconds.' % (ES_ADDRESS,))
+    raise SystemExit(1)
