@@ -8,7 +8,7 @@ RUN ["rpm", "--import", "/etc/pki/rpm-gpg/GPG-KEY-elasticsearch"]
 RUN ["yum", "install", "-y", "/usr/bin/which"]
 RUN ["yum", "install", "-y", "logstash"]
 
-ADD run.sh /usr/local/bin/run
+ADD run /usr/local/bin/run
 USER logstash
 CMD /usr/local/bin/run
 
