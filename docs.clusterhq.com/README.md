@@ -21,4 +21,4 @@ Running the Container
 
 Example:
 
-    docker run -d -v /certs/:/ssl/ -p 80:80 -p 443:443 -e "DOCS=flocker" msh100/rtd-https-proxy
+    docker run -d -v /certs/:/ssl/ -p 80:80 -p 443:443 -e "DOCS=flocker" clusterhq/docs.clusterhq.com
