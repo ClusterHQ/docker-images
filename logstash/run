@@ -15,7 +15,7 @@ ES_ADDRESS = (
     os.environ['ES_PORT_9200_TCP_PORT']
 )
 
-TIMEOUT = 30
+TIMEOUT = int(os.environ.get('ES_TIMEOUT', 120))
 
 LOGSTASH_BIN = "/opt/logstash/bin/logstash"
 LOGSTASH_CONFIG = """\
