@@ -1,7 +1,9 @@
-#!/bin/sh
-set -e
+#!/usr/bin/env python
 
-exec /opt/logstash/bin/logstash -e "
+import os
+
+LOGSTASH_BIN = "/opt/logstash/bin/logstash"
+LOGSTASH_CONFIG = """\
 input {
   tcp {
     port => 5000
@@ -11,8 +13,11 @@ input {
 
 output {
   elasticsearch {
-    host => '$ES_PORT_9200_TCP_ADDR'
-    port => $ES_PORT_9200_TCP_PORT
+    host => '%(ES_PORT_9200_TCP_ADDR)s'
+    port => %(ES_PORT_9200_TCP_PORT)s
     protocol => 'http'
   }
-}"
+}
+""" % os.environ
+
+os.execv(LOGSTASH_BIN, [LOGSTASH_BIN, '-e', LOGSTASH_CONFIG])
